@@ -104,6 +104,17 @@ export class Service {
             return false
         }
     }
+
+    async getFilePreview(fileID) {
+        try {
+            return await this.bucket.getFilePreview(
+                conf.appwriteBucketID,
+                fileID
+            );
+        } catch (error) {
+            console.log();
+        }
+    }
 }
 
 const service = new Service()
