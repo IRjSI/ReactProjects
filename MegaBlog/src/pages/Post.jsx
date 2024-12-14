@@ -16,7 +16,7 @@ export default function Post() {
 
     useEffect(() => {
         if (slug) {
-            appwriteService.getDocument(slug).then((post) => {
+            appwriteService.getPost(slug).then((post) => {
                 if (post) setPost(post);
                 else navigate("/");
             });
@@ -24,7 +24,7 @@ export default function Post() {
     }, [slug, navigate]);
 
     const deletePost = () => {
-        appwriteService.deleteDocument(post.$id).then((status) => {
+        appwriteService.deletePost(post.$id).then((status) => {
             if (status) {
                 appwriteService.deleteFile(post.featuredImage);
                 navigate("/");
