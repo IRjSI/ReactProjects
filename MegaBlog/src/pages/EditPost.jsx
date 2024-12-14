@@ -13,12 +13,12 @@ function EditPost() {
       appwriteService.getDocument(slug).then((post) => {
         if (post) {
           setPosts(post)
-        } else {
-          navigate('/')
-        }
+        } 
       })
+    } else {
+      navigate('/')
     }
-  })
+  }, [slug, navigate])
   return post ? (
     <div className='py-8'>
       <Container>

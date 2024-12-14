@@ -9,7 +9,7 @@ function PostForm({post}) {
     const {register, control, handleSubmit, watch, setValue, getValues} = useForm({
         defaultValues: {
             title: post?.title || '',
-            slug: post?.slug || '',
+            slug: post?.$id || '',
             content: post?.content || '',
             status: post?.status || 'active'
         },
@@ -20,7 +20,7 @@ function PostForm({post}) {
 
     const submit = async(data) => {
         if (post) { // updating existing post
-            const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
+            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
             if (file) { // delete previous image
                 appwriteService.deleteFile(post.featuredImage)
@@ -62,7 +62,7 @@ function PostForm({post}) {
     useEffect(() => {
         const subscription = watch((value,{name}) => {
             if (name === 'title') {
-                setValue('slug',slugTransform(value.title,{shouldValidate: true}));
+                setValue('slug',slugTransform(value.title),{shouldValidate: true});
             }
         })
 

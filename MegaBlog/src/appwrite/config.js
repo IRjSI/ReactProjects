@@ -1,5 +1,5 @@
-import conf from "../conf/conf";
-import { Client, ID, Databases, Storage, Query, Account } from "appwrite";
+import conf from "../conf/conf.js";
+import { Client, ID, Databases, Storage, Query } from "appwrite";
 
 export class Service {
     client = new Client();
@@ -11,7 +11,7 @@ export class Service {
             .setProject(conf.appwriteProjectID)
 
         this.databases = new Databases(this.client)
-        this.storage = new Storage(this.client)
+        this.bucket = new Storage(this.client)
     }
 
     async createPost({title, slug, content, featuredImage, status, userID}) {
@@ -21,11 +21,11 @@ export class Service {
                 conf.appwriteCollectionID, 
                 slug, 
                 {
-                    title, slug, content, featuredImage, status, userID
+                    title, content, featuredImage, status, userID
                 }
             )
         } catch (error) {
-            console.log("");
+            console.log(error);
         }
     }
 
@@ -40,7 +40,7 @@ export class Service {
                 }
             )
         } catch (error) {
-            console.log("");
+            console.log(error);
         }
     }
 
@@ -59,6 +59,7 @@ export class Service {
             return await this.databases.getDocument(conf.appwriteDatabaseID,conf.appwriteCollectionID,slug)
         } catch (error) {
             console.log("");
+            return false
         }
     }
 
@@ -105,15 +106,11 @@ export class Service {
         }
     }
 
-    async getFilePreview(fileID) {
-        try {
-            return await this.bucket.getFilePreview(
-                conf.appwriteBucketID,
-                fileID
-            );
-        } catch (error) {
-            console.log();
-        }
+    getFilePreview(fileId){
+        return this.bucket.getFilePreview(
+            conf.appwriteBucketID,
+            fileId
+        )
     }
 }
 
